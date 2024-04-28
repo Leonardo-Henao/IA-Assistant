@@ -1,6 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,linux,visualstudiocode,vim
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,linux,visualstudiocode,vim
-
+*.db
 ### Linux ###
 *~
 
@@ -209,6 +209,7 @@ tags
 [._]*.un~
 
 ### VisualStudioCode ###
+.vscode/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

@@ -15,6 +15,7 @@ Wofi assistant with Gemini IA (Google)
 - Wofi [(archlinux)](https://man.archlinux.org/man/wofi.1.en)
 - xclip [(Github)](https://github.com/astrand/xclip) or wl-clipboard [(Github)](https://github.com/bugaevc/wl-clipboard)
 - Api key to Gemini IA [(Google AI Studio)](https://aistudio.google.com/app/apikey)
+- tkinter
 
 ## Install
 
@@ -62,3 +63,8 @@ In your preference module add `"custom/ia-assistant"`
     /* Add you custom style here */
 }
 </pre>
+
+<div align=center>
+
+Visit me [Leonardo Henao]([https://leonardohenao.com])
+</div>

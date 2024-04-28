@@ -1,11 +1,14 @@
 import subprocess
 
 import google.generativeai as genai
-import pyperclip
 from wofi import Wofi
 
 from config import API_KEY_GEMINI
+from helpers import show_notification
+from helpers.control_history import get_all_data, remove_all, write_in_backup
+from show_windows import show_response
 
+_title_notification = "Gemini IA - @lhenaoll"
 wf = Wofi(height=200)
 wofi_resul = wf.text_entry("Whats is you question?")
 
@@ -13,7 +16,7 @@ if not wofi_resul:
     exit()
 
 try:
-    subprocess.run(["notify-send", "-a", "Gemini IA", "Loading...", "Gemini is loading a response"])
+    show_notification("Gemini is loading a response...")
 except:
     pass
 
@@ -22,6 +25,25 @@ if ":tre" in wofi_resul:
     new_promt = wofi_resul.replace(":tre", "Traduce al ingles ")
 elif ":trs" in wofi_resul:
     new_promt = wofi_resul.replace(":trs", "Traduce al español ")
+elif ":hsc" in wofi_resul:
+    remove_all()
+    subprocess.run(["notify-send", "-a", "Gemini IA", _title_notification, "Historial borrado", "-t", "2000"])
+    exit()
+elif ":hs" in wofi_resul:
+    result = get_all_data()
+
+    if len(result) == 0:
+        subprocess.run(
+            ["notify-send", "-a", "Gemini IA", _title_notification, "No hay contenido en el historial", "-t", "2000"]
+        )
+    else:
+        to_show = ""
+        for r in result:
+            t = f"{r[0]}: {r[1]}\n{r[2]}\n\n"
+            to_show += t
+
+        show_response(to_show)
+    exit()
 else:
     new_promt = wofi_resul
 
@@ -30,8 +52,5 @@ model = genai.GenerativeModel("gemini-pro")
 response = model.generate_content(new_promt)
 
 result_from_response = response.text
-
-selected, index = wf.select(f"Result from {new_promt}", [result_from_response])
-
-if selected == 0:
-    pyperclip.copy(result_from_response)
+write_in_backup(text=result_from_response, question=new_promt)
+show_response(result_from_response)
