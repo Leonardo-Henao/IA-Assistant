@@ -71,8 +71,13 @@ In your preference module add `"custom/ia-assistant"`
 }
 </pre>
 
-<div align=center>
+<div align="center">
 
 Visit me [Leonardo Henao]([https://leonardohenao.com])
+</div>
+
+<div align="center">
+
+<a href='https://ko-fi.com/lhenaoll' target='_blank'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
 
 </div>

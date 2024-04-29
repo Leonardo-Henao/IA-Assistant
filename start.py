@@ -62,7 +62,7 @@ def handle_text(event):
             else:
                 to_show = ""
                 for r in result:
-                    t = f"{r[0]}: {r[1]}\n{r[2]}\n\n"
+                    t = f"{r[0]}: {r[1]}\nQ: {r[2]}\nR: {r[3]}\n\n"
                     to_show += t
 
                 show_response(to_show)
