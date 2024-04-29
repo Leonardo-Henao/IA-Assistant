@@ -10,18 +10,21 @@ Wofi assistant with Gemini IA (Google)
 
 ## Requirements
 
+### All
+
+- Python 3.* [(Python.org)](https://www.python.org/)
+- TkInter [(Wiki Python)](https://wiki.python.org/moin/TkInter)
+- Api key to Gemini IA [(Google AI Studio)](https://aistudio.google.com/app/apikey)
+
 ### Linux
 
-- Wofi [(archlinux)](https://man.archlinux.org/man/wofi.1.en)
 - xclip [(Github)](https://github.com/astrand/xclip) or wl-clipboard [(Github)](https://github.com/bugaevc/wl-clipboard)
-- Api key to Gemini IA [(Google AI Studio)](https://aistudio.google.com/app/apikey)
-- tkinter
 
 ## Install
 
 - Config `GOOGLE_API_KEY` in you environments
 - Clone this repo
-- `cd ./wofi_IA` and execute `start.py` script
+- `cd ./IA-Assistant` and execute `start.py` script
 
 *If you OS require, set permissions to execute to `start.py` script*
 
@@ -29,14 +32,18 @@ Wofi assistant with Gemini IA (Google)
 
 ### Copy result
 
-When wofi show the result, press `[ENTER]` to copy it or press `[ESCAPE]` or your key to close wofi to no copy it.
+When show the result, press `[c]` to copy it or press `[ESCAPE]` to close window.
 
 ### Commands
 
 Start prompt with:
 
-- `:trs` to translate text to Spanish
-- `:tre` to translate text to English
+| Command | Action |
+|---|---|
+| `:trs` | Translate text to Spanish |
+| `:tre` | Translate text to English |
+| `:hs` | View history |
+| `:hsc` | Clear history|
 
 ### Waybar
 

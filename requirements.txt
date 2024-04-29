@@ -21,7 +21,6 @@ pydantic==2.7.1
 pydantic_core==2.18.2
 pyparsing==3.1.2
 pyperclip==1.8.2
-python-wofi==0.3.0
 requests==2.31.0
 rsa==4.9
 tqdm==4.66.2

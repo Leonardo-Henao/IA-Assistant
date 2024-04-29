@@ -28,7 +28,10 @@ def check_exist(func):
 @check_exist
 def write_in_backup(conn: sqlite3.Connection, cur: sqlite3.Cursor, text: str, question: str):
     created_at = datetime.datetime.now().strftime("%d %B %Y - %H:%M%p")
-    cur.execute(f"INSERT INTO {name_table}(created_at, question, data) VALUES (?,?)", (created_at, text))
+    cur.execute(
+        f"INSERT INTO {name_table}(created_at, question, data) VALUES (?,?,?)",
+        (created_at, question, text),
+    )
     conn.commit()
     conn.close()
 
