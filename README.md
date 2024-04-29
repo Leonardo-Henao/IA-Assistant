@@ -73,7 +73,7 @@ In your preference module add `"custom/ia-assistant"`
 
 <div align="center">
 
-Visit me [Leonardo Henao]([https://leonardohenao.com])
+Visit me [Leonardo Henao](https://leonardohenao.com)
 </div>
 
 <div align="center">
