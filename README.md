@@ -1,6 +1,6 @@
-# Wofi IA
+# IA Assistant
 
-Wofi assistant with Gemini IA (Google)
+Assistant with Gemini IA (Google)
 
 <div align="center">
 
@@ -54,7 +54,7 @@ Start prompt with:
 <pre>
    "custom/ia-assistant":{
     "format": " <span>   </span>",
-    "on-click": "python ~/set_you_path_here/wofi_IA/start.py",
+    "on-click": "python ~/set_you_path_here/IA-Assistant/start.py",
     "tooltip": false
   }
 </pre>
@@ -74,4 +74,5 @@ In your preference module add `"custom/ia-assistant"`
 <div align=center>
 
 Visit me [Leonardo Henao]([https://leonardohenao.com])
+
 </div>
