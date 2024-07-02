@@ -18,7 +18,7 @@ def show_response(data: str):
 
     # title
     window.make_label("IA Response", tk_title_font).pack()
-    window.make_label("[Escape] To close windows - [c] To copy", tk_small_font, "center", True).pack()
+    window.make_label("[Escape] To close windows - [Shift] + [c] To copy", tk_small_font, "center", True).pack()
 
     # frame title
     window.make_frame(20).pack()
@@ -30,6 +30,7 @@ def show_response(data: str):
     window.make_frame(10).pack()
 
     # label ending
-    window.add_bind("<Key-c>", lambda event: copy_response(event, data, window))
+    window.add_bind("<Shift-C>", lambda event: copy_response(event, data, window))
+
 
     window.show_window()

@@ -1,6 +1,7 @@
 import subprocess
 import webbrowser
 from tkinter import StringVar
+from translate import Translator
 
 import google.generativeai as genai
 
@@ -22,6 +23,30 @@ commands = [
 ]
 
 
+def use_translator(prompt: str, to_lang: str):
+    tr = Translator(from_lang="es" if to_lang == "en" else "en", to_lang=to_lang)
+    return tr.translate(prompt)
+
+
+def use_IA(prompt: str):
+    subprocess.run(
+        [
+            "notify-send",
+            "-a",
+            "Gemini IA",
+            _title_notification,
+            "Gemini is loading a response...",
+            "-t",
+            "2000",
+        ]
+    )
+
+    genai.configure(api_key=API_KEY_GEMINI)
+    model = genai.GenerativeModel("gemini-pro")
+    response = model.generate_content(prompt)
+    return response.text
+
+
 def handle_text(event):
     global window
 
@@ -33,18 +58,31 @@ def handle_text(event):
         return ""
     else:
         new_prompt = value_entry
+        response = ""
         if value_entry.startswith(":tre"):
-            new_prompt = value_entry.replace(":tre", "Traduce al ingles ")
+            new_prompt = value_entry.replace(":tre", "")
+            response = use_translator(new_prompt, "en")
 
-        if value_entry.startswith(":trs"):
-            new_prompt = value_entry.replace(":trs", "Traduce al español ")
+        elif value_entry.startswith(":trs"):
+            new_prompt = value_entry.replace(":trs", "")
+            response = use_translator(new_prompt, "es")
 
-        if value_entry.startswith(":hsc"):
+        elif value_entry.startswith(":hsc"):
             remove_all()
-            subprocess.run(["notify-send", "-a", "Gemini IA", _title_notification, "Historial borrado", "-t", "2000"])
+            subprocess.run(
+                [
+                    "notify-send",
+                    "-a",
+                    "Gemini IA",
+                    _title_notification,
+                    "Historial borrado",
+                    "-t",
+                    "2000",
+                ]
+            )
             exit()
 
-        if value_entry.startswith(":hs"):
+        elif value_entry.startswith(":hs"):
             result = get_all_data()
 
             if len(result) == 0:
@@ -68,27 +106,23 @@ def handle_text(event):
                 show_response(to_show)
             exit()
 
-    subprocess.run(
-        ["notify-send", "-a", "Gemini IA", _title_notification, "Gemini is loading a response...", "-t", "2000"]
-    )
+        else:
+            response = use_IA(new_prompt)
 
-    genai.configure(api_key=API_KEY_GEMINI)
-    model = genai.GenerativeModel("gemini-pro")
-    response = model.generate_content(new_prompt)
-
-    result_from_response = response.text
-    write_in_backup(result_from_response, new_prompt)
-    show_response(result_from_response)
+    write_in_backup(response, new_prompt)
+    show_response(response)
 
 
 ##########################################
 #       Creating GUI with Tkinter          #
 ##########################################
-
 window: MTkinter = MTkinter(f"Hi {_you_name}, I'm you assistant", 250)
 
 # title
-window.make_label(f"Hi {_you_name}, I'm you assistant \nWhat is you question in this moment?", tk_title_font).pack()
+window.make_label(
+    f"Hi {_you_name}, I'm you assistant \nWhat is you question in this moment?",
+    tk_title_font,
+).pack()
 
 # first frame
 window.make_frame(20).pack()
@@ -106,7 +140,11 @@ window.make_frame(30).pack()
 message_commands = [f"{c} = {a}" for c, a in commands]
 
 label_message = window.make_label(
-    str(message_commands).replace("[", "").replace("]", "").replace("'", "").replace(",", " | "),
+    str(message_commands)
+    .replace("[", "")
+    .replace("]", "")
+    .replace("'", "")
+    .replace(",", " | "),
     tk_small_font,
     "center",
     True,
@@ -117,7 +155,9 @@ window.make_frame(50).pack()
 
 # copyright message
 copy_label = window.make_label("Create by @lhenaoll", tk_small_font, "e", True)
-copy_label.bind("<Button-1>", lambda event: webbrowser.open("https://leonardohenao.com"))
+copy_label.bind(
+    "<Button-1>", lambda event: webbrowser.open("https://leonardohenao.com")
+)
 copy_label.pack()
 
 window.add_bind("<Return>", handle_text)

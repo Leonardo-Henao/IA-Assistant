@@ -1,5 +1,5 @@
-import sqlite3
 import datetime
+import sqlite3
 
 file_path = "history_ia_sqlite.db"
 name_table = "history"

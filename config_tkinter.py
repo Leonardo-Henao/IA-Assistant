@@ -1,4 +1,4 @@
-from tkinter import INSERT, Entry, Frame, Label, Tk, scrolledtext
+from tkinter import Entry, Frame, INSERT, Label, Tk, scrolledtext, StringVar
 
 tk_title_font = ("Poppins", "14", "bold")
 tk_normal_font = ("Poppins", "12")
@@ -53,7 +53,7 @@ class MTkinter:
         )
         return lb
 
-    def make_entry(self, txt_var):
+    def make_entry(self, txt_var: StringVar):
         entry: Entry = Entry(self.window, textvariable=txt_var)
         entry.configure(
             *self._input_config,
@@ -90,7 +90,6 @@ class MTkinter:
         self.window.bind(key, func)
 
     def get_height_response(self, length: int):
-        print(length)
         n_length = int(length / 2)
 
         if n_length <= 300:
