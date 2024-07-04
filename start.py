@@ -1,13 +1,11 @@
+import os
 import subprocess
 import webbrowser
 from tkinter import StringVar
-from translate import Translator
 
 import google.generativeai as genai
+from translate import Translator
 
-from config import API_KEY_GEMINI
-
-# from show_windows_response import show_response
 from config_tkinter import *
 from helpers.control_history import get_all_data, remove_all, write_in_backup
 from show_windows_response import show_response
@@ -24,27 +22,35 @@ commands = [
 
 
 def use_translator(prompt: str, to_lang: str):
-    tr = Translator(from_lang="es" if to_lang == "en" else "en", to_lang=to_lang)
+    tr = Translator(from_lang="es" if to_lang ==
+                    "en" else "en", to_lang=to_lang)
     return tr.translate(prompt)
 
 
 def use_IA(prompt: str):
-    subprocess.run(
-        [
-            "notify-send",
-            "-a",
-            "Gemini IA",
-            _title_notification,
-            "Gemini is loading a response...",
-            "-t",
-            "2000",
-        ]
-    )
+    API_KEY_GEMINI = os.environ.get("GOOGLE_API_KEY")
+    try:
+        if API_KEY_GEMINI == None:
+            return f"API_KEY_GEMINI is not defined. Result to get api key : {API_KEY_GEMINI}. Remember set you environment variable GOOGLE_API_KEY. See -> https://github.com/Leonardo-Henao/IA-Assistant?tab=readme-ov-file#all"
 
-    genai.configure(api_key=API_KEY_GEMINI)
-    model = genai.GenerativeModel("gemini-pro")
-    response = model.generate_content(prompt)
-    return response.text
+        subprocess.run(
+            [
+                "notify-send",
+                "-a",
+                "Gemini IA",
+                _title_notification,
+                "Gemini is loading a response...",
+                "-t",
+                "2000",
+            ]
+        )
+
+        genai.configure(api_key=API_KEY_GEMINI)
+        model = genai.GenerativeModel("gemini-pro")
+        response = model.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        return f"{str(e)} \n\n api-key:{API_KEY_GEMINI}"
 
 
 def handle_text(event):
@@ -68,7 +74,7 @@ def handle_text(event):
             response = use_translator(new_prompt, "es")
 
         elif value_entry.startswith(":hsc"):
-            remove_all()
+            remove_all()  # pyright: ignore missing-parameter
             subprocess.run(
                 [
                     "notify-send",
@@ -83,7 +89,7 @@ def handle_text(event):
             exit()
 
         elif value_entry.startswith(":hs"):
-            result = get_all_data()
+            result = get_all_data()  # pyright: ignore missing-parameter
 
             if len(result) == 0:
                 subprocess.run(
@@ -109,12 +115,12 @@ def handle_text(event):
         else:
             response = use_IA(new_prompt)
 
-    write_in_backup(response, new_prompt)
+    write_in_backup(response, new_prompt)  # pyright: ignore missing-parameter
     show_response(response)
 
 
 ##########################################
-#       Creating GUI with Tkinter          #
+#       Creating GUI with Tkinter        #
 ##########################################
 window: MTkinter = MTkinter(f"Hi {_you_name}, I'm you assistant", 250)
 
@@ -128,7 +134,8 @@ window.make_label(
 window.make_frame(20).pack()
 
 # entry
-entry_variable = StringVar(value="", name="What is you question in this moment?")
+entry_variable = StringVar(
+    value="", name="What is you question in this moment?")
 entry_question = window.make_entry(entry_variable)
 entry_question.focus()
 entry_question.pack()
@@ -156,8 +163,7 @@ window.make_frame(50).pack()
 # copyright message
 copy_label = window.make_label("Create by @lhenaoll", tk_small_font, "e", True)
 copy_label.bind(
-    "<Button-1>", lambda event: webbrowser.open("https://leonardohenao.com")
-)
+    "<Button-1>", lambda event: webbrowser.open("https://leonardohenao.com"))
 copy_label.pack()
 
 window.add_bind("<Return>", handle_text)

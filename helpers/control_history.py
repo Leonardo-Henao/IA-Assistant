@@ -13,7 +13,8 @@ def check_exist(func):
         data_check = check.fetchone()
 
         if not data_check:
-            cur.execute(f"CREATE TABLE {name_table}(id INTEGER PRIMARY KEY AUTOINCREMENT, created_at, question, data)")
+            cur.execute(
+                f"CREATE TABLE {name_table}(id INTEGER PRIMARY KEY AUTOINCREMENT, created_at, question, data)")
         else:
             if not name_table in data_check:
                 cur.execute(
