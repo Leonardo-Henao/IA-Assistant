@@ -24,10 +24,17 @@ Assistant with Gemini IA (Google)
 ## Install
 
 - Config `GOOGLE_API_KEY` in you environments
-- Clone this repo
-- `cd ./IA-Assistant` and execute `start.py` script
+- Clone this repo HTTP(`https://github.com/leonardo-henao/IA-Assistant.git`) or SSH(`git@github.com:leonardo-henao/IA-Assistant.git`)
+- `cd ./IA-Assistant`
+- Create virtual env `python3 -m venv .env` (optional)
+- Install requirements `pip install -r requirements.txt` *
+- Execute `./start.py` script or `python3 ./start.py` **
 
-_If you OS require, set permissions to execute to `start.py` script_
+> [!tip] Use Global
+> Execute `/your_path/IA-Assistant/start.sh` (change `dir` variable in `start.sh` with your path)
+
+_\* If you Python installation require, add `--break-system-packages`_ <br>
+_\** If you OS require, set permissions to execute to `start.py` script_
 
 ## Extras
 
@@ -43,10 +50,10 @@ Start prompt with:
 
 | Command | Action                    |
 | ------- | ------------------------- |
-| `:trs`  | Translate text to Spanish |
-| `:tre`  | Translate text to English |
-| `:hs`   | View history              |
-| `:hsc`  | Clear history             |
+| `:st`  | Translate text to Spanish |
+| `:et`  | Translate text to English |
+| `:sh`   | View history              |
+| `:ch`  | Clear history             |
 
 ### Waybar
 

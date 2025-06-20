@@ -11,14 +11,30 @@ from helpers.control_history import get_all_data, remove_all, write_in_backup
 from show_windows_response import show_response
 
 _you_name = "Leo"
-_title_notification = "Gemini IA - @lhenaoll"
+_title_notification = "IA Assistant - @lhenaoll"
+_sep = "++++++++++++++++++++++++++++++++++++++++++++"
+
 
 commands = [
-    (":tre", "Translate to English"),
-    (":trs", "Translate to Spanish"),
-    (":hs", "Show history"),
-    (":hsc", "Clear history"),
+    (":et", "Translate to English"),
+    (":st", "Translate to Spanish"),
+    (":sh", "Show history"),
+    (":ch", "Clear history"),
 ]
+
+
+def send_notification(message: str):
+    subprocess.run(
+        [
+            "notify-send",
+            "-a",
+            "Gemini IA",
+            _title_notification,
+            message,
+            "-t",
+            "2000",
+        ]
+    )
 
 
 def use_translator(prompt: str, to_lang: str):
@@ -30,23 +46,14 @@ def use_translator(prompt: str, to_lang: str):
 def use_IA(prompt: str):
     API_KEY_GEMINI = os.environ.get("GOOGLE_API_KEY")
     try:
-        if API_KEY_GEMINI == None:
+        if API_KEY_GEMINI is None:
+
             return f"API_KEY_GEMINI is not defined. Result to get api key : {API_KEY_GEMINI}. Remember set you environment variable GOOGLE_API_KEY. See -> https://github.com/Leonardo-Henao/IA-Assistant?tab=readme-ov-file#all"
 
-        subprocess.run(
-            [
-                "notify-send",
-                "-a",
-                "Gemini IA",
-                _title_notification,
-                "Gemini is loading a response...",
-                "-t",
-                "2000",
-            ]
-        )
+        send_notification("Gemini is loading a response...")
 
         genai.configure(api_key=API_KEY_GEMINI)
-        model = genai.GenerativeModel("gemini-pro")
+        model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
@@ -60,54 +67,33 @@ def handle_text(event):
     window.close_window()
 
     if len(value_entry) == 0:
-        pass
         return ""
     else:
         new_prompt = value_entry
         response = ""
-        if value_entry.startswith(":tre"):
-            new_prompt = value_entry.replace(":tre", "")
+        if value_entry.startswith(":et"):
+            new_prompt = value_entry.replace(":et", "")
             response = use_translator(new_prompt, "en")
 
-        elif value_entry.startswith(":trs"):
-            new_prompt = value_entry.replace(":trs", "")
+        elif value_entry.startswith(":st"):
+            new_prompt = value_entry.replace(":st", "")
             response = use_translator(new_prompt, "es")
 
-        elif value_entry.startswith(":hsc"):
+        elif value_entry.startswith(":ch"):
             remove_all()  # pyright: ignore missing-parameter
-            subprocess.run(
-                [
-                    "notify-send",
-                    "-a",
-                    "Gemini IA",
-                    _title_notification,
-                    "Historial borrado",
-                    "-t",
-                    "2000",
-                ]
-            )
+            send_notification("History deleted")
             exit()
 
-        elif value_entry.startswith(":hs"):
+        elif value_entry.startswith(":sh"):
             result = get_all_data()  # pyright: ignore missing-parameter
 
             if len(result) == 0:
-                subprocess.run(
-                    [
-                        "notify-send",
-                        "-a",
-                        "Gemini IA",
-                        _title_notification,
-                        "No hay contenido en el historial",
-                        "-t",
-                        "2000",
-                    ]
-                )
+                send_notification("No content in history")
             else:
                 to_show = ""
                 for r in result:
-                    t = f"{r[0]}: {r[1]}\nQ: {r[2]}\nR: {r[3]}\n\n"
-                    to_show += t
+                    row = f"{r[0]}: {r[1]}\nQ: {r[2]}\nR: {r[3]}\n\n"
+                    to_show += f"{_sep} \n{row}"
 
                 show_response(to_show)
             exit()

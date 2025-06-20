@@ -8,9 +8,9 @@ from config_tkinter import *
 def copy_response(event, data: str, window: MTkinter):
     pyperclip.copy(data)
 
-    # No se utiliza el modulo de notificación ya que tkinter no permite llamar métodos de otro modulo
+    # Notification module is not used as tkinter does not allow calling methods from another module
     subprocess.run(["notify-send", "-a", "Gemini IA",
-                   "Gemini IA - @lhenaoll", "The response was copied", "-t", "2000"])
+                   "IA Assistant - @lhenaoll", "The response was copied", "-t", "2000"])
     window.close_window()
 
 
