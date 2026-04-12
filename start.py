@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 import webbrowser
 from tkinter import StringVar
 
@@ -24,17 +25,33 @@ commands = [
 
 
 def send_notification(message: str):
-    subprocess.run(
-        [
-            "notify-send",
-            "-a",
-            "Gemini IA",
-            _title_notification,
-            message,
-            "-t",
-            "2000",
-        ]
-    )
+    platform = sys.platform
+
+    try:
+
+        if platform.startswith('win'):
+            print("Windows notifiation")
+        elif platform.startswith('linux'):
+            subprocess.run(
+                [
+                    "notify-send",
+                    "-a",
+                    "Gemini IA",
+                    _title_notification,
+                    message,
+                    "-t",
+                    "2000",
+                ]
+            )
+
+        elif platform == 'darwin':
+            print("Mac notification")
+        else:
+            print(
+                f"Estás usando un sistema operativo desconocido: {sys.platform}")
+
+    except Exception as e:
+        print("Notification is not working: ", e)
 
 
 def use_translator(prompt: str, to_lang: str):
@@ -52,8 +69,8 @@ def use_IA(prompt: str):
 
         send_notification("Gemini is loading a response...")
 
-        genai.configure(api_key=API_KEY_GEMINI)
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        genai.configure(api_key=API_KEY_GEMINI)  # pyright: ignore
+        model = genai.GenerativeModel("gemini-2.5-flash")  # pyright: ignore
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
